@@ -1,15 +1,8 @@
 import { combineReducers } from "redux";
-
-
-function todosReducers(state = [], action) {
-    return ['aprender redux']
-}
-
-function textReducer(state = '', action) {
-
-}
+import todosReducer from "./todosReducer";
+import textReducer from "./textReducer";
 
 export default combineReducers({
-    todos: todosReducers,
+    todos: todosReducer,
     text: textReducer,
 });

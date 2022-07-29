@@ -1,36 +1,38 @@
 import React from 'react';
-
-export default class TodoForm extends React.Component {
-    state = {
-        inputValue: ""
-    }
-
-    onChangeHandleInput(e) {
-        const { value } = e.target;
-        this.setState({
-            inputValue: value
-        })
-    }
-
-    onClickSave(e) {
-        const newTodo = this.state.inputValue;
-        this.props.onSaveTodo(newTodo);
-
-        this.setState({
-            inputValue: ""
-        })
-    }
+import { connect } from 'react-redux';
+import { setText, addTodo } from '../actions';
 
 
-    render() {
-        const { inputValue } = this.state;
-        return (
-            <React.Fragment>
+const TodoForm = ({ text, setText, addTodo }) => {
+
+    return (
+        <form className="row"
+            onSubmit={(e) => {
+                e.preventDefault();
+                addTodo(text);
+            }}>
+            <div className="input-field col s10">
                 <input
-                    value={inputValue}
-                    onChange={e => this.onChangeHandleInput(e)} />
-                <button onClick={(e) => this.onClickSave(e)}>Salvar</button>
-            </React.Fragment>
-        );
+                    id="todo-input"
+                    type="text"
+                    value={text}
+                    onChange={e => setText(e.target.value)} />
+                <label htmlFor="todo-input">Novo todo</label>
+            </div>
+            <div className="input-field col s2">
+                <button className="btn waves-effect waves-light btn"> Salvar</button>
+            </div>
+
+        </form>
+    );
+
+}
+
+function mapStateToProps(state) {
+    return {
+        text: state.text
     }
 }
+
+const mapDispatchToProps = { setText, addTodo };
+export default connect(mapStateToProps, mapDispatchToProps)(TodoForm)
